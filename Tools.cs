@@ -37,7 +37,7 @@ namespace Paint
             Draw.ActiveButton[2] = true;
         }
 
-        private void Erase_Click(object sender, EventArgs e)
+        private void Besye_Click(object sender, EventArgs e)
         {
             FalseActive();
             Draw.ActiveButton[3] = true;
