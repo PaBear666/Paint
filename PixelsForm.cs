@@ -19,7 +19,7 @@ namespace Paint
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Pixels pixels = new Pixels(60,60);
+            Pixels pixels = new Pixels(30,30);
             pixels.CreateAreaPixels(this);
             Tools tools = new Tools();
             tools.Show();
