@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace Paint
             switch (SendActiveButton()) 
             {
                 case 0:
-                    Algorithms.Line(buttons, int.Parse(coor[0, 0]), int.Parse(coor[0, 1]), int.Parse(coor[1, 0]), int.Parse(coor[1, 1]));
+                    Algorithms.Line(buttons, Color.Black, int.Parse(coor[0, 0]), int.Parse(coor[0, 1]), int.Parse(coor[1, 0]), int.Parse(coor[1, 1]));
                     break;
                 case 1:
                     Algorithms.Circle(buttons, int.Parse(coor[0, 0]), int.Parse(coor[0, 1]), int.Parse(coor[1, 0]), int.Parse(coor[1, 1]));
@@ -25,6 +26,7 @@ namespace Paint
                     Algorithms.Fill(buttons, int.Parse(coor[0, 0]), int.Parse(coor[0, 1]));
                     break;
                 case 3:
+                    Algorithms.Bezier(buttons, Color.Black, int.Parse(coor[0, 0]), int.Parse(coor[0, 1]), int.Parse(coor[1, 0]), int.Parse(coor[1, 1]));
                     break;
 
             }

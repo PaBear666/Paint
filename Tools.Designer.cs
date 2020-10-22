@@ -31,7 +31,7 @@
             this.Line = new System.Windows.Forms.Button();
             this.Circle = new System.Windows.Forms.Button();
             this.Fill = new System.Windows.Forms.Button();
-            this.Erase = new System.Windows.Forms.Button();
+            this.Bezier = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Line
@@ -64,22 +64,22 @@
             this.Fill.UseVisualStyleBackColor = true;
             this.Fill.Click += new System.EventHandler(this.Fill_Click);
             // 
-            // Erase
+            // Bezier
             // 
-            this.Erase.Location = new System.Drawing.Point(349, 12);
-            this.Erase.Name = "Erase";
-            this.Erase.Size = new System.Drawing.Size(86, 67);
-            this.Erase.TabIndex = 3;
-            this.Erase.Text = "Стереть";
-            this.Erase.UseVisualStyleBackColor = true;
-            this.Erase.Click += new System.EventHandler(this.Erase_Click);
+            this.Bezier.Location = new System.Drawing.Point(349, 12);
+            this.Bezier.Name = "Bezier";
+            this.Bezier.Size = new System.Drawing.Size(86, 67);
+            this.Bezier.TabIndex = 3;
+            this.Bezier.Text = "Безье";
+            this.Bezier.UseVisualStyleBackColor = true;
+            this.Bezier.Click += new System.EventHandler(this.Bezier_Click);
             // 
             // Tools
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(514, 92);
-            this.Controls.Add(this.Erase);
+            this.Controls.Add(this.Bezier);
             this.Controls.Add(this.Fill);
             this.Controls.Add(this.Circle);
             this.Controls.Add(this.Line);
@@ -95,6 +95,6 @@
         private System.Windows.Forms.Button Line;
         private System.Windows.Forms.Button Circle;
         private System.Windows.Forms.Button Fill;
-        private System.Windows.Forms.Button Erase;
+        private System.Windows.Forms.Button Bezier;
     }
 }

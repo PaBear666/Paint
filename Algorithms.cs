@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -10,7 +11,10 @@ namespace Paint
 {
     static class Algorithms
     {
-        static public void Line(Button[,]buttons,int x0,int y0,int x1,int y1) 
+        private static List<string> bufferLines = new List<string>();
+        private static Stack<string> bufferPointsOfBesye = new Stack<string>();
+
+        static public void Line(Button[,] buttons, Color color, int x0, int y0, int x1, int y1)
         {
             int x = x0;
             int y = y0;
@@ -28,7 +32,7 @@ namespace Paint
             {
                 double m = dy / dx;
                 double e = m - 0.5;
-                buttons[x, y].BackColor = Color.Black;
+                buttons[x, y].BackColor = color;
                 for (int i = 0; i < dx; i++)
                 {
 
@@ -49,14 +53,14 @@ namespace Paint
                         x += 1;
                     else
                         x -= 1;
-                    buttons[x, y].BackColor = Color.Black;
+                    buttons[x, y].BackColor = color;
                 }
             }
-            else 
+            else
             {
                 double m = dx / dy;
                 double e = m - 0.5;
-                buttons[x, y].BackColor = Color.Black;
+                buttons[x, y].BackColor = color;
                 for (int i = 0; i < dy; i++)
                 {
 
@@ -77,15 +81,38 @@ namespace Paint
                         y += 1;
                     else
                         y -= 1;
-                    buttons[x, y].BackColor = Color.Black;
+                    buttons[x, y].BackColor = color;
                 }
             }
         }
         static public void Circle(Button[,] buttons, int x0, int y0, int x1, int y1)
         {
-            for (int x = x1 - x0; x <= x0 + x1; x++) 
+            if (x1 > x0)
             {
-                buttons[x, y0 + (int)Math.Sqrt(x1 * x1 + Math.Pow(x - x0, 2))].BackColor = Color.Black;
+                int r = x1 - x0;
+                for (int x = x0 - r; x <= x0 + r; x++)
+                {
+                    try
+                    {
+                        buttons[x, y0 + (int)Math.Sqrt(r * r - Math.Pow(x - x0, 2))].BackColor = Color.Black;
+                        buttons[x, y0 - (int)Math.Sqrt(r * r - Math.Pow(x - x0, 2))].BackColor = Color.Black;
+                    }
+                    catch
+                    { }
+                }
+            }
+            else
+            {
+                int r = x0 - x1;
+                for (int x = x0 - r; x <= x0 + r; x++)
+                {
+                    try
+                    {
+                        buttons[x, y0 + (int)Math.Sqrt(r * r - Math.Pow(x - x0, 2))].BackColor = Color.Black;
+                        buttons[x, y0 - (int)Math.Sqrt(r * r - Math.Pow(x - x0, 2))].BackColor = Color.Black;
+                    }
+                    catch { }
+                }
             }
         }
         static public void Fill(Button[,] buttons, int x0, int y0)
@@ -94,7 +121,7 @@ namespace Paint
             Stack<int> Y = new Stack<int>();
             X.Push(x0);
             Y.Push(y0);
-            while(X.Count != 0 && Y.Count != 0) 
+            while (X.Count != 0 && Y.Count != 0)
             {
                 x0 = X.Pop();
                 y0 = Y.Pop();
@@ -109,15 +136,66 @@ namespace Paint
                         X.Push(x0 - 1); Y.Push(y0);
                     }
                 }
-                catch 
-                { 
+                catch
+                {
 
                 }
             }
         }
-        static public void Easer(Button[,] buttons) 
+        static public void Bezier(Button[,] buttons, Color color, int x0, int y0, int x1, int y1)
         {
-        
+            Line(buttons, color, x0, y0, x1, y1);
+            if (bufferLines.Count == 1)
+            {
+                AddBufferLines(x0, y0, x1, y1);
+                float t = 0;
+                while (t < 1)
+                {
+                    string findedcoor = FindCoorBesye(t);
+                    bufferPointsOfBesye.Push(findedcoor);
+                    string[] coor = findedcoor.Split(new char[] { ' ' });
+                    t += 0.1f;
+                }
+                UniteBesyePoints(buttons, Color.Red);
+                bufferLines.Clear();
+            }
+            else
+            {
+                AddBufferLines(x0, y0, x1, y1);
+            }
+
+        }
+
+        static private void AddBufferLines(int x0, int y0, int x1, int y1)
+        {
+            bufferLines.Add($"{x0} {y0} {x1} {y1}");
+        }
+        static private string FindCoorBesye(float t)
+        {
+            string[] coor0 = bufferLines.First().Split(new char[] { ' ' });
+            string[] coor1 = bufferLines.Last().Split(new char[] { ' ' });
+            int P0x = int.Parse(coor0[0]);
+            int P0y = int.Parse(coor0[1]);
+            int P1x = int.Parse(coor0[2]);
+            int P1y = int.Parse(coor0[3]);
+            int P2x = int.Parse(coor1[2]);
+            int P2y = int.Parse(coor1[3]);
+            int Px = (int)((1 - t) * (1 - t) * P0x + 2 * t * (1 - t) * P1x + t * t * P2x);
+            int Py = (int)((1 - t) * (1 - t) * P0y + 2 * t * (1 - t) * P1y + t * t * P2y);
+            return $"{Px} {Py}";
+        }
+        static private void UniteBesyePoints(Button[,] buttons, Color color)
+        {
+
+            while (bufferPointsOfBesye.Count != 1)
+            {
+                string[] coor0 = bufferPointsOfBesye.Pop().Split(new char[] { ' ' });
+                string[] coor1 = bufferPointsOfBesye.Peek().Split(new char[] { ' ' });
+                Line(buttons, color, int.Parse(coor0[0]), int.Parse(coor0[1]), int.Parse(coor1[0]), int.Parse(coor1[1]));
+
+            }
+            bufferPointsOfBesye.Clear();
         }
     }
 }
+
