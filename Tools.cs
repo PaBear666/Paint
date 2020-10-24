@@ -17,7 +17,13 @@ namespace Paint
             InitializeComponent();
         }
        
-        
+        private void FalseActive() 
+        {
+            for (int i = 0; i < Draw.ActiveButton.Length; i++)
+            {
+                Draw.ActiveButton[i] = false;
+            }
+        }
 
         private void Line_Click(object sender, EventArgs e)
         {
@@ -43,13 +49,10 @@ namespace Paint
             Draw.ActiveButton[3] = true;
         }
 
-        private void FalseActive() 
+        private void FillAdapt_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < Draw.ActiveButton.Length; i++)
-            {
-                Draw.ActiveButton[i] = false;
-            }
+            FalseActive();
+            Draw.ActiveButton[4] = true;
         }
-        
     }
 }

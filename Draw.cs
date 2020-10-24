@@ -10,7 +10,7 @@ namespace Paint
 {
     static class Draw
     {
-        static public bool[] ActiveButton = new bool[4];
+        static public bool[] ActiveButton = new bool[5];
 
         static public void Drawing(Button[,] buttons,string[,] coor) 
         {
@@ -27,6 +27,9 @@ namespace Paint
                     break;
                 case 3:
                     Algorithms.Bezier(buttons, Color.Black, int.Parse(coor[0, 0]), int.Parse(coor[0, 1]), int.Parse(coor[1, 0]), int.Parse(coor[1, 1]));
+                    break;
+                case 4:
+                    Algorithms.FillImproved(buttons,Color.Black, int.Parse(coor[0, 0]), int.Parse(coor[0, 1]));
                     break;
 
             }

@@ -142,6 +142,62 @@ namespace Paint
                 }
             }
         }
+
+        static public void FillImproved(Button[,] buttons,Color color, int x0, int y0)
+        {
+            Stack<int> X = new Stack<int>();
+            Stack<int> Y = new Stack<int>();
+            X.Push(x0);
+            Y.Push(y0);
+            Color colorarea = buttons[x0, y0].BackColor;
+            
+            while(X.Count != 0 && Y.Count != 0)
+            {
+                x0 = X.Pop();
+                y0 = Y.Pop();
+                int i = 0;
+                while (buttons[x0 + i, y0].BackColor == colorarea)
+                {
+                    if (buttons[x0 + i, y0 - 1].BackColor == colorarea && i == 0) 
+                    {
+                        X.Push(x0);
+                        Y.Push(y0 - 1);
+                    }
+                    else if(buttons[x0 + i, y0 - 1].BackColor == colorarea)
+                    {
+                        int i1 = X.Pop();
+                        int i2 = Y.Pop();
+                        X.Push(x0 + i);
+                        Y.Push(y0 - 1);
+                    }
+                    if (buttons[x0 + i, y0 + 1].BackColor == colorarea && i == 0)
+                    {
+                        X.Push(x0);
+                        Y.Push(y0 + 1);
+                    }
+                    else if (buttons[x0 + i, y0 + 1].BackColor == colorarea)
+                    {
+                        int i1 = X.Pop();
+                        int i2 = Y.Pop();
+                        X.Push(x0 + i);
+                        Y.Push(y0 + 1);
+                    }
+                    buttons[x0 + i, y0].BackColor = color;
+                    i++;
+
+                }
+                i = 1;
+                while (buttons[x0 - i, y0].BackColor == colorarea)
+                {
+                    buttons[x0 - i, y0].BackColor = color;
+                    i++;
+                    
+                }
+            }
+        }
+
+            
+        
         static public void Bezier(Button[,] buttons, Color color, int x0, int y0, int x1, int y1)
         {
             Line(buttons, color, x0, y0, x1, y1);
@@ -151,11 +207,10 @@ namespace Paint
                 float t = 0;
                 while (t < 1)
                 {
-                    string findedcoor = FindCoorBesye(t);
-                    bufferPointsOfBesye.Push(findedcoor);
-                    string[] coor = findedcoor.Split(new char[] { ' ' });
+                    bufferPointsOfBesye.Push(FindCoorBesye(t));
                     t += 0.1f;
                 }
+                bufferPointsOfBesye.Push(FindCoorBesye(t));
                 UniteBesyePoints(buttons, Color.Red);
                 bufferLines.Clear();
             }
@@ -192,7 +247,6 @@ namespace Paint
                 string[] coor0 = bufferPointsOfBesye.Pop().Split(new char[] { ' ' });
                 string[] coor1 = bufferPointsOfBesye.Peek().Split(new char[] { ' ' });
                 Line(buttons, color, int.Parse(coor0[0]), int.Parse(coor0[1]), int.Parse(coor1[0]), int.Parse(coor1[1]));
-
             }
             bufferPointsOfBesye.Clear();
         }

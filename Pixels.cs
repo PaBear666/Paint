@@ -76,6 +76,7 @@ namespace Paint
             MouseClick(x - 1, y);
 
         }
+
         private void MouseClick(int x, int y)
         {
             if (ClickButton[0, 0] == null)
