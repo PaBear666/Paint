@@ -33,11 +33,12 @@
             this.Fill = new System.Windows.Forms.Button();
             this.Bezier = new System.Windows.Forms.Button();
             this.FillAdapt = new System.Windows.Forms.Button();
+            this.FillPattern = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Line
             // 
-            this.Line.Location = new System.Drawing.Point(73, 12);
+            this.Line.Location = new System.Drawing.Point(50, 13);
             this.Line.Name = "Line";
             this.Line.Size = new System.Drawing.Size(86, 67);
             this.Line.TabIndex = 0;
@@ -47,7 +48,7 @@
             // 
             // Circle
             // 
-            this.Circle.Location = new System.Drawing.Point(165, 11);
+            this.Circle.Location = new System.Drawing.Point(142, 12);
             this.Circle.Name = "Circle";
             this.Circle.Size = new System.Drawing.Size(86, 67);
             this.Circle.TabIndex = 1;
@@ -57,7 +58,7 @@
             // 
             // Fill
             // 
-            this.Fill.Location = new System.Drawing.Point(257, 11);
+            this.Fill.Location = new System.Drawing.Point(234, 12);
             this.Fill.Name = "Fill";
             this.Fill.Size = new System.Drawing.Size(86, 67);
             this.Fill.TabIndex = 2;
@@ -67,7 +68,7 @@
             // 
             // Bezier
             // 
-            this.Bezier.Location = new System.Drawing.Point(349, 12);
+            this.Bezier.Location = new System.Drawing.Point(326, 13);
             this.Bezier.Name = "Bezier";
             this.Bezier.Size = new System.Drawing.Size(86, 67);
             this.Bezier.TabIndex = 3;
@@ -77,19 +78,30 @@
             // 
             // FillAdapt
             // 
-            this.FillAdapt.Location = new System.Drawing.Point(441, 13);
+            this.FillAdapt.Location = new System.Drawing.Point(418, 14);
             this.FillAdapt.Name = "FillAdapt";
             this.FillAdapt.Size = new System.Drawing.Size(86, 67);
             this.FillAdapt.TabIndex = 4;
-            this.FillAdapt.Text = "Заливка";
+            this.FillAdapt.Text = "Улучшенная Заливка";
             this.FillAdapt.UseVisualStyleBackColor = true;
             this.FillAdapt.Click += new System.EventHandler(this.FillAdapt_Click);
+            // 
+            // FillPattern
+            // 
+            this.FillPattern.Location = new System.Drawing.Point(510, 14);
+            this.FillPattern.Name = "FillPattern";
+            this.FillPattern.Size = new System.Drawing.Size(86, 67);
+            this.FillPattern.TabIndex = 5;
+            this.FillPattern.Text = "Заливка узором";
+            this.FillPattern.UseVisualStyleBackColor = true;
+            this.FillPattern.Click += new System.EventHandler(this.FillPattern_Click);
             // 
             // Tools
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(595, 92);
+            this.ClientSize = new System.Drawing.Size(651, 92);
+            this.Controls.Add(this.FillPattern);
             this.Controls.Add(this.FillAdapt);
             this.Controls.Add(this.Bezier);
             this.Controls.Add(this.Fill);
@@ -109,5 +121,6 @@
         private System.Windows.Forms.Button Fill;
         private System.Windows.Forms.Button Bezier;
         private System.Windows.Forms.Button FillAdapt;
+        private System.Windows.Forms.Button FillPattern;
     }
 }

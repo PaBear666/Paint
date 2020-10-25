@@ -10,22 +10,22 @@ namespace Paint
 {
     class Pixels
     {
-        private int Height { get; set; }
+        public int Height { get; private set; }
 
-        private int Width { get; set; }
+        public int Width { get; private set; }
 
-        private Button[,] Buttons;
+        public Button[,] Buttons { get; private set; }
 
         public string[,] ClickButton = new string[2, 2];
 
-        public bool[,] Buttons_Action;
+        //public bool[,] Buttons_Action;
 
         public Pixels(int width, int height)
         {
             Width = width;
             Height = height;
             Buttons = new Button[Width, Height];
-            Buttons_Action = new bool[Width, Height];
+            //Buttons_Action = new bool[Width, Height];
 
         }
 
@@ -42,18 +42,27 @@ namespace Paint
                         BackColor = Color.White
                     };
                     form.Controls.Add(Buttons[x, y]);
-                    Buttons[x, y].Click += new EventHandler(PressButton);
+                    //Buttons[x, y].MouseClick += new MouseEventHandler(PressButton);
+                    Buttons[x, y].MouseUp += new MouseEventHandler(PressButton);
                 }
             }
         }
 
-        private void PressButton(object sender, EventArgs e)
+        private void PressButton(object sender, MouseEventArgs e)
         {
             Button pressbutton = sender as Button;
-            Calculate(pressbutton);
+            switch (e.Button.ToString()) 
+            {
+                case "Left":
+                    Calculate(pressbutton,"Left");
+                    break;
+                case "Right":
+                    Calculate(pressbutton, "Right");
+                    break;
+            }
         }
 
-        private void Calculate(Button button)
+        private void Calculate(Button button,string onbutton)
         {
             bool FindedNeedButton = false;
             int x = 0;
@@ -72,14 +81,25 @@ namespace Paint
                 }
                 x++;
             }
-            Buttons_Action[x - 1, y] = true;
-            MouseClick(x - 1, y);
+            //Buttons_Action[x - 1, y] = true;
+            if (onbutton == "Left")
+                MouseClick(x - 1, y);
+            if (onbutton == "Right")
+                SetColorOneButton(x - 1, y);
 
         }
 
         private void MouseClick(int x, int y)
-        {
-            if (ClickButton[0, 0] == null)
+        {   
+            if(Draw.ActiveRightOff)
+            {
+                ClickButton[0, 0] = x.ToString();
+                ClickButton[0, 1] = y.ToString();
+                Draw.Drawing(Buttons, ClickButton);
+                Draw.ActiveRightOff = false;
+                
+            }
+            else if (ClickButton[0, 0] == null )
             {
                 ClickButton[0, 0] = x.ToString();
                 ClickButton[0, 1] = y.ToString();
@@ -94,6 +114,12 @@ namespace Paint
                 ClickButton[1, 0] = null;
                 ClickButton[1, 1] = null;
             }
+            
         }
+        private void SetColorOneButton(int x,int y) 
+        {
+            Buttons[x, y].BackColor = Color.Black;
+        }
+
     }
 }

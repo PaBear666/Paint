@@ -10,7 +10,9 @@ namespace Paint
 {
     static class Draw
     {
-        static public bool[] ActiveButton = new bool[5];
+        static public bool[] ActiveButton = new bool[6];
+
+        static public bool ActiveRightOff { get; set; }
 
         static public void Drawing(Button[,] buttons,string[,] coor) 
         {
@@ -30,6 +32,11 @@ namespace Paint
                     break;
                 case 4:
                     Algorithms.FillImproved(buttons,Color.Black, int.Parse(coor[0, 0]), int.Parse(coor[0, 1]));
+                    break;
+                case 5:
+                    AreaPattern areaPattern = new AreaPattern();
+                    areaPattern.ShowDialog();
+                    Algorithms.FillPattern(buttons,areaPattern.FillArea, int.Parse(coor[0, 0]), int.Parse(coor[0, 1]));
                     break;
 
             }

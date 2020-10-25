@@ -54,5 +54,12 @@ namespace Paint
             FalseActive();
             Draw.ActiveButton[4] = true;
         }
+
+        private void FillPattern_Click(object sender, EventArgs e)
+        {
+            FalseActive();
+            Draw.ActiveButton[5] = true;
+            Draw.ActiveRightOff = true;
+        }
     }
 }

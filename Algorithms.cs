@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -11,8 +10,7 @@ namespace Paint
 {
     static class Algorithms
     {
-        private static List<string> bufferLines = new List<string>();
-        private static Stack<string> bufferPointsOfBesye = new Stack<string>();
+       
 
         static public void Line(Button[,] buttons, Color color, int x0, int y0, int x1, int y1)
         {
@@ -117,6 +115,7 @@ namespace Paint
         }
         static public void Fill(Button[,] buttons, int x0, int y0)
         {
+            Color color = buttons[x0, y0].BackColor;
             Stack<int> X = new Stack<int>();
             Stack<int> Y = new Stack<int>();
             X.Push(x0);
@@ -127,7 +126,7 @@ namespace Paint
                 y0 = Y.Pop();
                 try
                 {
-                    if (buttons[x0, y0].BackColor != Color.Black)
+                    if (buttons[x0, y0].BackColor == color)
                     {
                         buttons[x0, y0].BackColor = Color.Black;
                         X.Push(x0); Y.Push(y0 + 1);
@@ -142,7 +141,6 @@ namespace Paint
                 }
             }
         }
-
         static public void FillImproved(Button[,] buttons, Color color, int x0, int y0)
         {
             Stack<int> X = new Stack<int>();
@@ -202,88 +200,15 @@ namespace Paint
                 
             }
         }
-        #region Машкин
-        //static public void ZatravkaMod(int x, int y, Button[,] buttons, Color color)
+        static public void FillPattern(Button[,] buttons,Color[,] patternarea, int x0, int y0) 
+        {
+            //Color colorarea = buttons[x0, y0].BackColor;
+           
+            //for (int i = 0; i < length; i++)
+            //{
 
-        //{
-
-        //    Color backcolor = buttons[x,y].BackColor;
-
-        //    int xl = x;
-
-        //    int xr = x + 1;
-
-        //    while ((xl >= 0) && (buttons[xl, y].BackColor == backcolor))
-
-        //    {
-
-        //        buttons[xl, y].BackColor = color; 
-
-        //        xl--;
-
-        //    }
-
-        //    xl++;
-
-
-
-        //    while ((xr < 60 - 1) && (buttons[xr, y].BackColor == backcolor))
-
-        //    {
-
-        //        buttons[xr, y].BackColor = color;
-
-        //        xr++;
-
-        //    }
-
-        //    xr--;
-
-        //    int tmp_x = xl;
-
-        //    while ((tmp_x <= xr) && (y != 0))
-
-        //    {
-
-        //        while ((tmp_x <= xr) && (buttons[tmp_x, y - 1].BackColor != backcolor))
-
-        //        {
-
-        //            tmp_x++;
-
-        //        }
-
-        //        if (tmp_x <= xr) ZatravkaMod(tmp_x, y - 1,buttons, color);
-
-        //        tmp_x++;
-
-        //    }
-
-        //    tmp_x = xl;
-
-        //    while ((tmp_x <= xr) && (y + 1 != 60))
-
-        //    {
-
-        //        while ((tmp_x <= xr) && (buttons[tmp_x, y + 1].BackColor != backcolor))
-
-        //        {
-
-        //            tmp_x++;
-
-        //        }
-
-        //        if (tmp_x <= xr) ZatravkaMod(tmp_x, y + 1, buttons, color);
-
-        //        tmp_x++;
-
-        //    }
-
-        //}
-        #endregion
-
-
-
+            //}
+        }
         static public void Bezier(Button[,] buttons, Color color, int x0, int y0, int x1, int y1)
         {
             Line(buttons, color, x0, y0, x1, y1);
@@ -306,7 +231,9 @@ namespace Paint
             }
 
         }
-
+        #region Bezier
+        private static List<string> bufferLines = new List<string>();
+        private static Stack<string> bufferPointsOfBesye = new Stack<string>();
         static private void AddBufferLines(int x0, int y0, int x1, int y1)
         {
             bufferLines.Add($"{x0} {y0} {x1} {y1}");
@@ -336,6 +263,7 @@ namespace Paint
             }
             bufferPointsOfBesye.Clear();
         }
+        #endregion
     }
 }
 
