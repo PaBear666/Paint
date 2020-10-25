@@ -143,61 +143,147 @@ namespace Paint
             }
         }
 
-        static public void FillImproved(Button[,] buttons,Color color, int x0, int y0)
+        static public void FillImproved(Button[,] buttons, Color color, int x0, int y0)
         {
             Stack<int> X = new Stack<int>();
             Stack<int> Y = new Stack<int>();
             X.Push(x0);
             Y.Push(y0);
             Color colorarea = buttons[x0, y0].BackColor;
-            
-            while(X.Count != 0 && Y.Count != 0)
+            // Линия
+            while (X.Count != 0 && Y.Count != 0)
             {
                 x0 = X.Pop();
                 y0 = Y.Pop();
                 int i = 0;
-                while (buttons[x0 + i, y0].BackColor == colorarea)
+                //Идем вправо
+                while(buttons[x0 + i,y0].BackColor == colorarea)
                 {
-                    if (buttons[x0 + i, y0 - 1].BackColor == colorarea && i == 0) 
+                    if (i != 0)
                     {
-                        X.Push(x0);
+                        buttons[x0 + i, y0].BackColor = color;
+                    }
+                    i++;
+                }
+                int j = 0;
+                //Идем влево
+                while (buttons[x0 - j, y0].BackColor == colorarea)
+                {
+                    buttons[x0 - j, y0].BackColor = color;
+                    j++;
+                }
+                j--;
+                //Анализируем слева направо
+                for (int k = 0; k < Math.Abs(i + j); k++)
+                {
+                    //Вверхняя линия
+                    if(buttons[x0 - j + k,y0 - 1].BackColor == colorarea && buttons[x0 - j + k + 1, y0 - 1].BackColor != colorarea) 
+                    {
+                        X.Push(x0 - j + k);
                         Y.Push(y0 - 1);
                     }
-                    else if(buttons[x0 + i, y0 - 1].BackColor == colorarea)
+                    if(k + 1 == i + j && (buttons[x0 - j + k, y0 - 1].BackColor == colorarea))
                     {
-                        int i1 = X.Pop();
-                        int i2 = Y.Pop();
-                        X.Push(x0 + i);
+                        X.Push(x0 - j + k);
                         Y.Push(y0 - 1);
                     }
-                    if (buttons[x0 + i, y0 + 1].BackColor == colorarea && i == 0)
+                    //Нижняя Линия
+                    if (buttons[x0 - j + k, y0 + 1].BackColor == colorarea && buttons[x0 - j + k + 1, y0 + 1].BackColor != colorarea)
                     {
-                        X.Push(x0);
+                        X.Push(x0 - j + k);
                         Y.Push(y0 + 1);
                     }
-                    else if (buttons[x0 + i, y0 + 1].BackColor == colorarea)
+                    if (k + 1 == i + j && (buttons[x0 - j + k, y0 + 1].BackColor == colorarea))
                     {
-                        int i1 = X.Pop();
-                        int i2 = Y.Pop();
-                        X.Push(x0 + i);
+                        X.Push(x0 - j + k);
                         Y.Push(y0 + 1);
                     }
-                    buttons[x0 + i, y0].BackColor = color;
-                    i++;
-
                 }
-                i = 1;
-                while (buttons[x0 - i, y0].BackColor == colorarea)
-                {
-                    buttons[x0 - i, y0].BackColor = color;
-                    i++;
-                    
-                }
+                
             }
         }
+        #region Машкин
+        //static public void ZatravkaMod(int x, int y, Button[,] buttons, Color color)
 
-            
-        
+        //{
+
+        //    Color backcolor = buttons[x,y].BackColor;
+
+        //    int xl = x;
+
+        //    int xr = x + 1;
+
+        //    while ((xl >= 0) && (buttons[xl, y].BackColor == backcolor))
+
+        //    {
+
+        //        buttons[xl, y].BackColor = color; 
+
+        //        xl--;
+
+        //    }
+
+        //    xl++;
+
+
+
+        //    while ((xr < 60 - 1) && (buttons[xr, y].BackColor == backcolor))
+
+        //    {
+
+        //        buttons[xr, y].BackColor = color;
+
+        //        xr++;
+
+        //    }
+
+        //    xr--;
+
+        //    int tmp_x = xl;
+
+        //    while ((tmp_x <= xr) && (y != 0))
+
+        //    {
+
+        //        while ((tmp_x <= xr) && (buttons[tmp_x, y - 1].BackColor != backcolor))
+
+        //        {
+
+        //            tmp_x++;
+
+        //        }
+
+        //        if (tmp_x <= xr) ZatravkaMod(tmp_x, y - 1,buttons, color);
+
+        //        tmp_x++;
+
+        //    }
+
+        //    tmp_x = xl;
+
+        //    while ((tmp_x <= xr) && (y + 1 != 60))
+
+        //    {
+
+        //        while ((tmp_x <= xr) && (buttons[tmp_x, y + 1].BackColor != backcolor))
+
+        //        {
+
+        //            tmp_x++;
+
+        //        }
+
+        //        if (tmp_x <= xr) ZatravkaMod(tmp_x, y + 1, buttons, color);
+
+        //        tmp_x++;
+
+        //    }
+
+        //}
+        #endregion
+
+
+
         static public void Bezier(Button[,] buttons, Color color, int x0, int y0, int x1, int y1)
         {
             Line(buttons, color, x0, y0, x1, y1);
