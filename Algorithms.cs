@@ -153,77 +153,141 @@ namespace Paint
             {
                 x0 = X.Pop();
                 y0 = Y.Pop();
-                int i = 0;
+                int xR = 0;
                 //Идем вправо
-                while(buttons[x0 + i,y0].BackColor == colorarea)
+                while(buttons[x0 + xR,y0].BackColor == colorarea)
                 {
-                    if (i != 0)
+                    if (xR != 0)
                     {
-                        buttons[x0 + i, y0].BackColor = color;
+                        buttons[x0 + xR, y0].BackColor = color;
                     }
-                    i++;
+                    xR++;
                 }
-                int j = 0;
+                int xL = 0;
                 //Идем влево
-                while (buttons[x0 - j, y0].BackColor == colorarea)
+                while (buttons[x0 - xL, y0].BackColor == colorarea)
                 {
-                    buttons[x0 - j, y0].BackColor = color;
-                    j++;
+                    buttons[x0 - xL, y0].BackColor = color;
+                    xL++;
                 }
-                j--;
+                xL--;
                 //Анализируем слева направо
-                for (int k = 0; k < Math.Abs(i + j); k++)
+                for (int k = 0; k < xR + xL; k++)
                 {
                     //Вверхняя линия
-                    if(buttons[x0 - j + k,y0 - 1].BackColor == colorarea && buttons[x0 - j + k + 1, y0 - 1].BackColor != colorarea) 
+                    if(buttons[x0 - xL + k,y0 - 1].BackColor == colorarea && buttons[x0 - xL + k + 1, y0 - 1].BackColor != colorarea) 
                     {
-                        X.Push(x0 - j + k);
+                        X.Push(x0 - xL + k);
                         Y.Push(y0 - 1);
                     }
-                    if(k + 1 == i + j && (buttons[x0 - j + k, y0 - 1].BackColor == colorarea))
+                    if(k + 1 == xR + xL && (buttons[x0 - xL + k, y0 - 1].BackColor == colorarea))
                     {
-                        X.Push(x0 - j + k);
+                        X.Push(x0 - xL + k);
                         Y.Push(y0 - 1);
                     }
                     //Нижняя Линия
-                    if (buttons[x0 - j + k, y0 + 1].BackColor == colorarea && buttons[x0 - j + k + 1, y0 + 1].BackColor != colorarea)
+                    if (buttons[x0 - xL + k, y0 + 1].BackColor == colorarea && buttons[x0 - xL + k + 1, y0 + 1].BackColor != colorarea)
                     {
-                        X.Push(x0 - j + k);
+                        X.Push(x0 - xL + k);
                         Y.Push(y0 + 1);
                     }
-                    if (k + 1 == i + j && (buttons[x0 - j + k, y0 + 1].BackColor == colorarea))
+                    if (k + 1 == xR + xL && (buttons[x0 - xL + k, y0 + 1].BackColor == colorarea))
                     {
-                        X.Push(x0 - j + k);
+                        X.Push(x0 - xL + k);
                         Y.Push(y0 + 1);
                     }
                 }
                 
             }
         }
-        static public void FillPattern(Button[,] buttons,Color[,] patternarea, int x0, int y0) 
+        static public void FillPattern( Button[,] buttons, Color[,] pattern,int x, int y, int w, int h)
         {
-            //Color colorarea = buttons[x0, y0].BackColor;
-           
-            //for (int i = 0; i < length; i++)
-            //{
+            Stack<int> X = new Stack<int>();
+            Stack<int> Y = new Stack<int>();
+            X.Push(x);
+            Y.Push(y);
+            Color backcolor = buttons[x,y].BackColor;
+            while (X.Count != 0 && Y.Count != 0)
+            {
+                x = X.Pop();
+                y = Y.Pop();
+                int i = 0;
+                //Идем вправо
+                while (buttons[x + i, y].BackColor == backcolor)
+                {
+                    if (i != 0)
+                    {
+                        buttons[x + i, y].BackColor = pattern[(x + i) % w, y % h];
+                    }
+                    i++;
+                }
+                int j = 0;
+                //Идем влево
+                while (buttons[x - j, y].BackColor == backcolor)
+                {
 
-            //}
+                    buttons[x - j, y].BackColor = pattern[(x - j) % w, y % h];
+                    j++;
+                }
+                j--;
+
+                for (int k = 0; k < Math.Abs(i + j); k++)
+                {
+                    //Проверяем верхнюю линию
+                    if (buttons[x - j + k, y - 1].BackColor == backcolor && buttons[x - j + k + 1, y - 1].BackColor != backcolor)
+                    {
+                            
+                        X.Push(x - j + k);
+                        Y.Push(y - 1);
+                    }
+                    if (k + 1 == i + j && (buttons[x - j + k, y - 1].BackColor == backcolor))
+                    {
+                        
+                        X.Push(x - j + k);
+                        Y.Push(y - 1);
+                    }
+                    //Проверяем нижниюю линию
+                    if (buttons[x - j + k, y + 1].BackColor == backcolor && buttons[x - j + k + 1, y + 1].BackColor != backcolor)
+                    {
+                        X.Push(x - j + k);
+                        Y.Push(y + 1);
+                    }
+                    if (k + 1 == i + j && (buttons[x - j + k, y + 1].BackColor == backcolor))
+                    {
+                       
+                        X.Push(x - j + k);
+                        Y.Push(y + 1);
+                    }
+                }
+
+            }
+        }
+        static public void Eazier(Button[,] buttons,int w,int h) 
+        {
+            for (int i = 0; i < w; i++)
+            {
+                for (int j = 0; j < h; j++)
+                {
+                    buttons[i, j].BackColor = Color.White;
+                }
+            }
         }
         static public void Bezier(Button[,] buttons, Color color, int x0, int y0, int x1, int y1)
         {
             Line(buttons, color, x0, y0, x1, y1);
-            if (bufferLines.Count == 1)
-            {
-                AddBufferLines(x0, y0, x1, y1);
+            if (x0 == x1 && y0 == y1)
+            { 
                 float t = 0;
                 while (t < 1)
                 {
-                    bufferPointsOfBesye.Push(FindCoorBesye(t));
-                    t += 0.1f;
+                    //bufferPointsOfBesye.Push(FindCoorBesye(t));
+                    
+                    FindCoorBesye(t);
+                    t += 0.01f;
                 }
-                bufferPointsOfBesye.Push(FindCoorBesye(t));
+                FindCoorBesye(t);
                 UniteBesyePoints(buttons, Color.Red);
-                bufferLines.Clear();
+                BufferLines.Clear();
             }
             else
             {
@@ -232,36 +296,150 @@ namespace Paint
 
         }
         #region Bezier
-        private static List<string> bufferLines = new List<string>();
-        private static Stack<string> bufferPointsOfBesye = new Stack<string>();
+        /// <summary>
+        /// Буфер для линий в безье
+        /// </summary>
+        private static List<string> BufferLines = new List<string>();
+        /// <summary>
+        /// Буфер получившихся точек безье
+        /// </summary>
+        private static Stack<string> BufferPointsOfBesye = new Stack<string>();
+        /// <summary>
+        /// Добавляет в буфер линий безье линию
+        /// </summary>
+        /// <param name="x0">Координата x для первой точки</param>
+        /// <param name="y0">Координата y для первой точки</param>
+        /// <param name="x1">Координата x для второй точки</param>
+        /// <param name="y1">Координата y для второй точки</param>
         static private void AddBufferLines(int x0, int y0, int x1, int y1)
         {
-            bufferLines.Add($"{x0} {y0} {x1} {y1}");
+            BufferLines.Add($"{x0} {y0} {x1} {y1}");
         }
-        static private string FindCoorBesye(float t)
+        /// <summary>
+        /// Находит точку безье
+        /// </summary>
+        /// <param name="t">Шаг</param>
+        /// <returns>Координаты точки</returns>
+        static private void FindCoorBesye(float t)
         {
-            string[] coor0 = bufferLines.First().Split(new char[] { ' ' });
-            string[] coor1 = bufferLines.Last().Split(new char[] { ' ' });
-            int P0x = int.Parse(coor0[0]);
-            int P0y = int.Parse(coor0[1]);
-            int P1x = int.Parse(coor0[2]);
-            int P1y = int.Parse(coor0[3]);
-            int P2x = int.Parse(coor1[2]);
-            int P2y = int.Parse(coor1[3]);
-            int Px = (int)((1 - t) * (1 - t) * P0x + 2 * t * (1 - t) * P1x + t * t * P2x);
-            int Py = (int)((1 - t) * (1 - t) * P0y + 2 * t * (1 - t) * P1y + t * t * P2y);
-            return $"{Px} {Py}";
+            // Тип для хранения Double
+            // Опорных точек больше
+            // Шаг меньще
+            // Алгоритм Брезенхама для окружности
+            int Px = P('x', BufferLines.Count(),t);
+            int Py = P('y', BufferLines.Count(),t);
+            BufferPointsOfBesye.Push($"{Px} {Py}");
         }
+        /// <summary>
+        /// Соединяет линями получившиеся точки
+        /// </summary>
+        /// <param name="buttons">Рабочее поле</param>
+        /// <param name="color">Цвет рисовки линии</param>
         static private void UniteBesyePoints(Button[,] buttons, Color color)
         {
 
-            while (bufferPointsOfBesye.Count != 1)
+            while (BufferPointsOfBesye.Count != 1)
             {
-                string[] coor0 = bufferPointsOfBesye.Pop().Split(new char[] { ' ' });
-                string[] coor1 = bufferPointsOfBesye.Peek().Split(new char[] { ' ' });
+                string[] coor0 = BufferPointsOfBesye.Pop().Split(new char[] { ' ' });
+                string[] coor1 = BufferPointsOfBesye.Peek().Split(new char[] { ' ' });
                 Line(buttons, color, int.Parse(coor0[0]), int.Parse(coor0[1]), int.Parse(coor1[0]), int.Parse(coor1[1]));
             }
-            bufferPointsOfBesye.Clear();
+            //foreach (var coor in BufferPointsOfBesye) 
+            //{
+            //    string[] coor0 = coor.Split(new char[] { ' ' });
+            //    buttons[int.Parse(coor0[0]), int.Parse(coor0[1])].BackColor = Color.Red; 
+            //}
+            BufferPointsOfBesye.Clear();
+        }
+        /// <summary>
+        /// Вычисляет факториал
+        /// </summary>
+        /// <param name="n">Начальное число</param>
+        /// <returns>Факториал</returns>
+        static private double Factorial(int n)
+        {
+            double r = 1;
+            for (int i = 2; i <= n; ++i)
+                r *= i;
+            return r;
+        }
+        /// <summary>
+        /// Вычисляет координаты Точки Безье
+        /// </summary>
+        /// <param name="xORy">Какую Координату точки безье вернуть</param>
+        /// <param name="m">Количество отрезков</param>
+        /// <param name="t">Шаг</param>
+        /// <returns>Координата точки безье</returns>
+        static private int P(char xORy,int m,float t) 
+        {
+            switch (xORy) 
+            {
+                case 'x':
+                    double x = 0;
+                    for (int i = 0; i <= m ; i++)
+                    {
+                        x += C(m, i) * Math.Pow(t, i) * Math.Pow(1 - t, m - i) * GetNeedCoorFromBufferLines(xORy,i,m);
+                    }
+                    return (int)x;
+                case 'y':
+                    double y = 0;
+                    for (int i = 0; i <= m; i++)
+                    {
+                        y += C(m, i) * Math.Pow(t, i) * Math.Pow(1 - t, m - i) * GetNeedCoorFromBufferLines(xORy, i,m);
+                    }
+                    return (int)y;
+                default:
+                    return -1;
+            }
+        }
+        /// <summary>
+        /// Вычисляет Сочетание
+        /// </summary>
+        /// <param name="m"></param>
+        /// <param name="i"></param>
+        /// <returns>Сочетание m по i</returns>
+        static private double C(int m ,int i) 
+        {
+            double result = Factorial(m) / (Factorial(i) * Factorial(m - i));
+            return result;
+        }
+        /// <summary>
+        /// Возвращает нужную точку отрезка
+        /// </summary>
+        /// <param name="xORy">Какую координату точки вернуть</param>
+        /// <param name="i">Количество точек</param>
+        /// <param name="m">Количество прямых</param>
+        /// <returns></returns>
+        static private int GetNeedCoorFromBufferLines(char xORy, int i,int m) 
+        {
+            switch (xORy) 
+            {
+                case 'x':
+                    if (i != m)
+                    {
+                        string[] coor0 = BufferLines.ElementAt(i).Split(new char[] { ' ' });
+                        return int.Parse(coor0[0]);
+                    }
+                    else
+                    {
+                        string[] coor0 = BufferLines.ElementAt(i - 1).Split(new char[] { ' ' });
+                        return int.Parse(coor0[2]);
+                    }
+
+                case 'y':
+                    if (i != m)
+                    {
+                        string[] coor0 = BufferLines.ElementAt(i).Split(new char[] { ' ' });
+                        return int.Parse(coor0[1]);
+                    }
+                    else
+                    {
+                        string[] coor0 = BufferLines.ElementAt(i - 1).Split(new char[] { ' ' });
+                        return int.Parse(coor0[3]);
+                    }
+                default:
+                    return -1;
+            }
         }
         #endregion
     }

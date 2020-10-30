@@ -61,5 +61,11 @@ namespace Paint
             Draw.ActiveButton[5] = true;
             Draw.ActiveRightOff = true;
         }
+
+        private void Eazier_Click(object sender, EventArgs e)
+        {
+            FalseActive();
+            Draw.ActiveButton[6] = true;
+        }
     }
 }

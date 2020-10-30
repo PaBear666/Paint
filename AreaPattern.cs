@@ -18,7 +18,7 @@ namespace Paint
         {
             InitializeComponent();
             FillArea = new Color[5, 5];
-            Pixels = new Pixels(5, 5);
+            Pixels = new Pixels(5, 5,Color.Beige);
         }
 
         private void AreaPattern_Load(object sender, EventArgs e)

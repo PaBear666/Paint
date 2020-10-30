@@ -10,25 +10,42 @@ namespace Paint
 {
     class Pixels
     {
+        /// <summary>
+        /// Количество пикселей в высоту
+        /// </summary>
         public int Height { get; private set; }
-
+        /// <summary>
+        /// Количество пикселей в ширину
+        /// </summary>
         public int Width { get; private set; }
-
+        /// <summary>
+        /// Свойство для работы с полем
+        /// </summary>
         public Button[,] Buttons { get; private set; }
-
+        /// <summary>
+        /// Буфер нажатых кнопок (MAX=2)
+        /// </summary>
         public string[,] ClickButton = new string[2, 2];
-
+        public Color ColorOfButton { get; private set; }
         //public bool[,] Buttons_Action;
-
-        public Pixels(int width, int height)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="width">Ширина</param>
+        /// <param name="height">Высота</param>
+        public Pixels(int width, int height,Color colorOfButton)
         {
             Width = width;
             Height = height;
             Buttons = new Button[Width, Height];
+            ColorOfButton = colorOfButton;
             //Buttons_Action = new bool[Width, Height];
 
         }
-
+        /// <summary>
+        /// Создает рабочие пространство
+        /// </summary>
+        /// <param name="form">Форма для рабочего пространства</param>
         public void CreateAreaPixels(Form form)
         {
             for (int y = 0; y < Height; y++)
@@ -39,7 +56,8 @@ namespace Paint
                     {
                         Size = new System.Drawing.Size(form.Width / Width, form.Height / Height),
                         Location = new System.Drawing.Point(form.Width / Width * x, form.Height / Height * y),
-                        BackColor = Color.White
+                        BackColor = ColorOfButton,
+                        Text = $"{x} {y}"
                     };
                     form.Controls.Add(Buttons[x, y]);
                     //Buttons[x, y].MouseClick += new MouseEventHandler(PressButton);
@@ -47,7 +65,11 @@ namespace Paint
                 }
             }
         }
-
+        /// <summary>
+        /// Событие (Нажатие кнопки)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PressButton(object sender, MouseEventArgs e)
         {
             Button pressbutton = sender as Button;
@@ -61,7 +83,11 @@ namespace Paint
                     break;
             }
         }
-
+        /// <summary>
+        /// Высчитывает координату кнопки
+        /// </summary>
+        /// <param name="button"></param>
+        /// <param name="onbutton"></param>
         private void Calculate(Button button,string onbutton)
         {
             bool FindedNeedButton = false;
@@ -88,7 +114,11 @@ namespace Paint
                 SetColorOneButton(x - 1, y);
 
         }
-
+        /// <summary>
+        /// Заносит в буфер координаты нажатой кнопки
+        /// </summary>
+        /// <param name="x">Координата x</param>
+        /// <param name="y">Координата y</param>
         private void MouseClick(int x, int y)
         {   
             if(Draw.ActiveRightOff)
@@ -116,9 +146,14 @@ namespace Paint
             }
             
         }
+        /// <summary>
+        /// Красит кнопку в черный цвет при нажатии MouseRight
+        /// </summary>
+        /// <param name="x">Координата x</param>
+        /// <param name="y">Координата y</param>
         private void SetColorOneButton(int x,int y) 
         {
-            Buttons[x, y].BackColor = Color.Black;
+            Buttons[x, y].BackColor = Color.Blue;
         }
 
     }

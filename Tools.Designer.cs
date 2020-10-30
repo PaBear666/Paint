@@ -34,6 +34,7 @@
             this.Bezier = new System.Windows.Forms.Button();
             this.FillAdapt = new System.Windows.Forms.Button();
             this.FillPattern = new System.Windows.Forms.Button();
+            this.Eazier = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Line
@@ -96,11 +97,22 @@
             this.FillPattern.UseVisualStyleBackColor = true;
             this.FillPattern.Click += new System.EventHandler(this.FillPattern_Click);
             // 
+            // Eazier
+            // 
+            this.Eazier.Location = new System.Drawing.Point(602, 14);
+            this.Eazier.Name = "Eazier";
+            this.Eazier.Size = new System.Drawing.Size(86, 67);
+            this.Eazier.TabIndex = 6;
+            this.Eazier.Text = "Стереть";
+            this.Eazier.UseVisualStyleBackColor = true;
+            this.Eazier.Click += new System.EventHandler(this.Eazier_Click);
+            // 
             // Tools
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(651, 92);
+            this.ClientSize = new System.Drawing.Size(751, 92);
+            this.Controls.Add(this.Eazier);
             this.Controls.Add(this.FillPattern);
             this.Controls.Add(this.FillAdapt);
             this.Controls.Add(this.Bezier);
@@ -122,5 +134,6 @@
         private System.Windows.Forms.Button Bezier;
         private System.Windows.Forms.Button FillAdapt;
         private System.Windows.Forms.Button FillPattern;
+        private System.Windows.Forms.Button Eazier;
     }
 }
