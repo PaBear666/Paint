@@ -26,7 +26,6 @@ namespace Paint
             
             Pixels.CreateAreaPixels(this);
         }
-
         private void AreaPattern_FormClosed(object sender, FormClosedEventArgs e)
         {  
             MoveThePic();

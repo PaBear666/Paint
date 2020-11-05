@@ -57,7 +57,6 @@ namespace Paint
                         Size = new System.Drawing.Size(form.Width / Width, form.Height / Height),
                         Location = new System.Drawing.Point(form.Width / Width * x, form.Height / Height * y),
                         BackColor = ColorOfButton,
-                        Text = $"{x} {y}"
                     };
                     form.Controls.Add(Buttons[x, y]);
                     //Buttons[x, y].MouseClick += new MouseEventHandler(PressButton);
